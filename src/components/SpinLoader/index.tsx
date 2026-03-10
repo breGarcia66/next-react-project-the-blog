@@ -1,33 +1,27 @@
-import { clsx } from 'clsx';
+import clsx from 'clsx';
 
-type SpinLoeaderProps = {
-  containerClasses?: string;
+type SpinLoaderProps = {
+  className?: string;
 };
 
-export default async function SpinLoader({
-  containerClasses,
-}: SpinLoeaderProps) {
-
-  const spinContent = clsx(
+export function SpinLoader({ className = '' }: SpinLoaderProps) {
+  const classes = clsx(
     'flex',
-    'justify-center',
     'items-center',
-    containerClasses
-  );
-
-  const spin = clsx(
-    'w-10',
-    'h-10',
-    'border-4',
-    'border-t-transparent',
-    'border-slate-900',
-    'rounded-full',
-    'animate-spin',
+    'justify-center',
+    className,
   );
 
   return (
-    <div className={spinContent}>
-      <div className={spin}></div>
+    <div className={classes}>
+      <div
+        className={clsx(
+          'w-10 h-10',
+          'border-5 border-t-transparent border-slate-900',
+          'rounded-full',
+          'animate-spin',
+        )}
+      ></div>
     </div>
   );
 }
