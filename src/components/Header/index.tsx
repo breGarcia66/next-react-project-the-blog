@@ -1,29 +1,35 @@
+import Link from "next/link";
+
 import clsx from "clsx";
 
 export function Header() {
   const pageTitle = clsx(
-    //mobile
     'text-5xl/normal',
     'font-extrabold',
-    'py-8',
+    'pt-8',
+    'pb-16',
+    'text-stone-800',
 
-    //tablet (vertical)
+    //640px
     'sm:text-6xl/normal',
-    'sm:py-10',
+    'sm:pt-10',
+    'sm:pb-20',
 
-    //tabler(horizontal)
+    //1024px
     'lg:text-7xl/normal',
-    'lg:py-12',
+    'lg:pt-12',
+    'lg:pb-24',
 
-    //notebooks and desktops
+    //1280px
     'xl:text-8xl/normal',
-    'xl:py-14'
+    'xl:pt-14',
+    'xl:pb-28'
   );
 
   return (
     <header>
       <h1 className={pageTitle}>
-        <a href="#">The Blog</a>
+        <Link href="#">The Blog</Link>
       </h1>
     </header>
   );
