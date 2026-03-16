@@ -29,17 +29,17 @@ export class JsonPostRepository implements PostRepository {
     await new Promise(resolve => setTimeout(resolve, SIMULATE_WAIT_IN_MS));
   }
 
-  async findAll(): Promise<postModel[]> {
+  async findAllPublic(): Promise<postModel[]> {
     await this.simulateWait();
 
     const posts = await this.readFromDisk();
-    return posts;
+    return posts.filter(post => post.published);
   }
 
   async findById(id: string): Promise<postModel> {
     await this.simulateWait();
 
-    const posts = await this.findAll();
+    const posts = await this.findAllPublic();
     const searchedPost = posts.find(post => post.id === id);
 
     if (!searchedPost) throw new Error('Post não econtrado');

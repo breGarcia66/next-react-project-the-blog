@@ -9,9 +9,7 @@ import { PostFeatured } from '@/components/PostFeatured';
 
 export default async function HomePage() {
   return (
-    <Container>
-      <Header />
-
+    <>
       <Suspense fallback={<SpinLoader />}>
         <PostFeatured />
       </Suspense>
@@ -19,10 +17,6 @@ export default async function HomePage() {
       <Suspense fallback={<SpinLoader />}>
         <PostList />
       </Suspense>
-
-      <footer>
-        <h1 className='text-6xl font-bold text-center py-8'>Rodapé</h1>
-      </footer>
-    </Container>
+    </>
   );
 }

@@ -2,11 +2,18 @@
 import { PostCoverImage } from '../PostCoverImage';
 import { PostHeading } from '../PostHeading';
 
+import { allPublicPosts } from '@/lib/post/queries';
+
 import { formatRelativeDate } from '@/utils/format-relative-date';
 
 import clsx from 'clsx';
 
-export function PostFeatured() {
+export async function PostFeatured() {
+  const posts = await allPublicPosts();
+  const postFeatured = posts[0];
+
+  const postLink = `post/${postFeatured.slug}`;
+
   const mainPostContainer = clsx(
     'grid',
     'grid-cols-1',
@@ -24,10 +31,10 @@ export function PostFeatured() {
   return (
     <section className={mainPostContainer}>
       <PostCoverImage
-        PostLinkProps={{ href: '#' }}
+        PostLinkProps={{ href: postLink }}
         PostImageProps={{
-          alt: 'Imagem do Post',
-          src: '/images/bryen_7.png',
+          alt: postFeatured.title,
+          src: postFeatured.coverImageUrl,
           width: 1200,
           height: 720,
           priority: true,
@@ -35,20 +42,18 @@ export function PostFeatured() {
       />
 
       <div>
-        <time dateTime='2026-03-12' className={mainPostTime}>
-          12/03/2026 - 12:58
+        <time
+          dateTime={formatRelativeDate(postFeatured.createdAt)}
+          className={mainPostTime}
+        >
+          {formatRelativeDate(postFeatured.createdAt)}
         </time>
 
         <PostHeading url='#' as='h2'>
-          Título do Post
+          {postFeatured.title}
         </PostHeading>
 
-        <p className={postContent}>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam,
-          fugit. Dicta non voluptates aut aspernatur modi doloribus dolorem
-          porro perspiciatis error nostrum, cupiditate dolor. Voluptas aperiam
-          architecto eos sint cum?
-        </p>
+        <p className={postContent}>{postFeatured.excerpt}</p>
       </div>
     </section>
   );

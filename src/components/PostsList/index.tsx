@@ -2,14 +2,14 @@
 import { PostCoverImage } from '../PostCoverImage';
 import { PostSummary } from '../PostSummary';
 
-import { postRepository } from '@/repositories/post';
+import { allPublicPosts } from '@/lib/post/queries';
 
 import { formatRelativeDate } from '@/utils/format-relative-date';
 
 import clsx from 'clsx';
 
 export async function PostList() {
-  const posts = await postRepository.findAll();
+  const posts = (await allPublicPosts()).slice(1);
 
   const postListContainer = clsx(
     'grid',
