@@ -1,5 +1,8 @@
+//components
 import { PostCoverImage } from '../PostCoverImage';
 import { PostHeading } from '../PostHeading';
+
+import { formatRelativeDate } from '@/utils/format-relative-date';
 
 import clsx from 'clsx';
 
