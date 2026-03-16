@@ -24,31 +24,35 @@ export async function PostList() {
 
   return (
     <section className={postListContainer}>
-      {posts.map(post => (
-        <div key={post.id} className={postContainer}>
-          <PostCoverImage
-            PostLinkProps={{ href: `post/${post.slug}` }}
-            PostImageProps={{
-              src: post.coverImageUrl,
-              alt: post.title,
-              width: 1200,
-              height: 720,
-            }}
-          />
+      {posts.map(post => {
+        const postLink = `post/${post.slug}`;
 
-          <div>
-            <time className={postTime} dateTime={post.createdAt}>
-              {post.createdAt}
-            </time>
+        return (
+          <div key={post.id} className={postContainer}>
+            <PostCoverImage
+              PostLinkProps={{ href: postLink }}
+              PostImageProps={{
+                src: post.coverImageUrl,
+                alt: post.title,
+                width: 1200,
+                height: 720,
+              }}
+            />
 
-            <PostHeading url='#' as='h3'>
-              {post.title}
-            </PostHeading>
+            <div>
+              <time className={postTime} dateTime={post.createdAt}>
+                {post.createdAt}
+              </time>
 
-            <p className={postContent}>{post.excerpt}</p>
+              <PostHeading url={postLink} as='h3'>
+                {post.title}
+              </PostHeading>
+
+              <p className={postContent}>{post.excerpt}</p>
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </section>
   );
 }
