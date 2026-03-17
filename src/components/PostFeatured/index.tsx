@@ -20,7 +20,6 @@ export async function PostFeatured() {
     'gap-6',
     'mb-20',
     'group',
-    'text-stone-800',
 
     //768px
     'md:grid-cols-2',

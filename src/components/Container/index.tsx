@@ -6,7 +6,7 @@ type ContainerProps = {
 };
 
 export function Container({ children }: ContainerProps) {
-  const colorDiv = clsx('text-stone-900', 'bg-stone-200');
+  const colorDiv = clsx('bg-stone-200', 'min-h-screen');
 
   const formattingDiv = clsx('max-w-5xl', 'mx-auto', 'px-8');
 

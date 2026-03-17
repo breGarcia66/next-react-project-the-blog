@@ -6,30 +6,25 @@ export function Header() {
   const pageTitle = clsx(
     'text-5xl/normal',
     'font-extrabold',
-    'pt-8',
-    'pb-16',
-    'text-stone-800',
+    'py-10',
 
     //640px
     'sm:text-6xl/normal',
-    'sm:pt-10',
-    'sm:pb-20',
+    'sm:py-12',
 
     //1024px
     'lg:text-7xl/normal',
-    'lg:pt-12',
-    'lg:pb-24',
+    'lg:py-14',
 
     //1280px
     'xl:text-8xl/normal',
-    'xl:pt-14',
-    'xl:pb-28'
+    'xl:py-16'
   );
 
   return (
     <header>
       <h1 className={pageTitle}>
-        <Link href="#">The Blog</Link>
+        <Link href="/">The Blog</Link>
       </h1>
     </header>
   );
