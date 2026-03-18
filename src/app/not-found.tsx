@@ -8,8 +8,8 @@ export default function NotFoundPage() {
     'min-h-[340px]',
   );
   const content = clsx('flex', 'items-center', 'justify-center', 'gap-2');
-  const code = clsx('text-8xl', 'font-bold', 'mb-8', 'pr-2');
-  const pipe = clsx('px-px', 'py-12', 'bg-stone-800');
+  const code = clsx('text-8xl', 'font-bold', 'mb-2', 'pr-2');
+  const pipe = clsx('px-px', 'py-10', 'bg-stone-800');
   const text = clsx('pl-4', 'text-lg/tight');
 
   return (

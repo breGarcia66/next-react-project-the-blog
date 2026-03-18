@@ -48,7 +48,7 @@ export async function PostFeatured() {
           {formatRelativeDate(postFeatured.createdAt)}
         </time>
 
-        <PostHeading url='#' as='h2'>
+        <PostHeading url={postLink} as='h2'>
           {postFeatured.title}
         </PostHeading>
 
