@@ -21,7 +21,7 @@ export default function RootLayout({ children }: Readonly<RootLayoutProps>) {
   return (
     <html lang='pt-BR'>
       <body>
-        <Container>
+        <Container className='min-h-screen flex flex-col justify-between'>
           <Header />
 
           {children}
