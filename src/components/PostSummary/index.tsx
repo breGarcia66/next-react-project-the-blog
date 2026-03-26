@@ -1,4 +1,5 @@
 import { PostHeading } from '../PostHeading';
+import { PostDate } from '../PostDate';
 
 import clsx from 'clsx';
 
@@ -11,14 +12,11 @@ type PostSummaryProps = {
 };
 
 export function PostSummary({ ...props }: PostSummaryProps) {
-  const postTime = clsx('text-sm/tight', 'text-stone-500', 'block');
   const postContent = clsx('text-justify');
 
   return (
     <div>
-      <time className={postTime} dateTime={props.createdAt}>
-        {props.createdAt}
-      </time>
+      <PostDate dateTime={props.createdAt} />
 
       <PostHeading url={props.url} as={props.as}>
         {props.title}
