@@ -1,7 +1,6 @@
+import { SafeMarkdown } from '../SafeMarkdown';
 import { findPostBySlug } from '@/lib/post/queries';
-
 import { PostDate } from '../PostDate';
-
 import { formatDatetime } from '@/utils/format-datetime';
 
 import Image from 'next/image';
@@ -31,7 +30,7 @@ export async function SinglePost({ slug }: SinglePostProps) {
         </p>
       </header>
 
-      <p>{post.content}</p>
+      <SafeMarkdown markdown={post.content} />
     </article>
   );
 }

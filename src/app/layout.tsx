@@ -20,7 +20,7 @@ type RootLayoutProps = {
 export default function RootLayout({ children }: Readonly<RootLayoutProps>) {
   return (
     <html lang='pt-BR'>
-      <body>
+      <body cz-shortcut-listen="true">
         <Container className='min-h-screen flex flex-col justify-between'>
           <Header />
 
