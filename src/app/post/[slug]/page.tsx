@@ -3,7 +3,6 @@ import { SinglePost } from '@/components/SinglePost';
 import { SpinLoader } from '@/components/SpinLoader';
 
 import { findPostBySlug } from '@/lib/post/queries';
-import { allPublicPosts } from '@/lib/post/queries';
 
 import { Metadata } from 'next';
 import { Suspense } from 'react';
@@ -24,14 +23,6 @@ export async function generateMetadata({
   };
 }
 
-export async function generateStaticParams() {
-  const posts = await allPublicPosts();
-  const params = posts.map(post => {
-    return { slug: post.slug };
-  });
-
-  return params
-}
 
 export default async function PostPage({ params }: PostPageProps) {
   const { slug } = await params;
