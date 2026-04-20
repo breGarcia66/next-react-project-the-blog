@@ -36,6 +36,11 @@ export class JsonPostRepository implements PostRepository {
     return posts.filter(post => post.published);
   }
 
+  async findAll(): Promise<postModel[]> {
+    const posts = await this.readFromDisk();
+    return posts;
+  }
+
   async findById(id: string): Promise<postModel> {
     const posts = await this.findAllPublic();
     const searchedPost = posts.find(post => post.id === id);
