@@ -11,14 +11,42 @@ export class DrizzlePostRepository implements PostRepository {
 
     return posts;
   }
-  async findBySlug(slug: string): Promise<postModel> {}
-  async findById(id: string): Promise<postModel> {}
-  async findAll(): Promise<postModel[]> {}
+
+  async findBySlugPublic(slug: string): Promise<postModel> {
+    const post = await drizzleDb.query.posts.findFirst({
+      where: (post, { eq, and }) =>
+        and(eq(post.published, true), eq(post.slug, slug)),
+    });
+
+    if (!post) throw new Error(`\n>>>${slug}<<<\n\nPost publicado com essa slug não encontrado.\n`);
+
+    return post;
+  }
+
+  async findById(id: string): Promise<postModel> {
+    const post = await drizzleDb.query.posts.findFirst({
+      where: (post, { eq }) => eq(post.id, id),
+    });
+
+    if (!post) throw new Error(`\n>>>${id}<<<\n\nPost com esse ID não encontrado.\n`);
+
+    return post;
+  }
+
+  async findAll(): Promise<postModel[]> {
+    const posts = await drizzleDb.query.posts.findMany({
+      orderBy: (posts, { desc }) => desc(posts.createdAt),
+    });
+
+    return posts;
+  }
 }
 
-(async() => {
-  const drizzlePostRepository = new DrizzlePostRepository;
-  const postsNonPublished = await drizzlePostRepository.findAllPublic();
+// (async () => {
+//   const drizzlePostRepository = new DrizzlePostRepository();
+//   const posts = await drizzlePostRepository.findBySlugPublic(
+//     'rotina-matinal-de-pessoas-altamente-eficazes',
+//   );
 
-  postsNonPublished.forEach(post => {console.log(post.slug, post.published)});
-})();
+//   console.log(posts);
+// })();
