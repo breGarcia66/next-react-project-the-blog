@@ -1,7 +1,7 @@
 import { PostHeading } from '../PostHeading';
-import { PostDate } from '../PostDate';
 
 import clsx from 'clsx';
+import { RelativeDate } from '../RelativeDate';
 
 type PostSummaryProps = {
   url: string;
@@ -16,7 +16,7 @@ export function PostSummary({ ...props }: PostSummaryProps) {
 
   return (
     <div>
-      <PostDate dateTime={props.createdAt} />
+      <RelativeDate date={props.createdAt} className='text-sm/tight text-stone-500'/>
 
       <PostHeading url={props.url} as={props.as}>
         {props.title}

@@ -5,6 +5,8 @@ import { Container } from '@/components/Container';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 
+import { Suspense } from 'react';
+
 export const metadata: Metadata = {
   title: {
     default: 'The Blog',
@@ -20,13 +22,15 @@ type RootLayoutProps = {
 export default function RootLayout({ children }: Readonly<RootLayoutProps>) {
   return (
     <html lang='pt-BR'>
-      <body cz-shortcut-listen="true">
+      <body cz-shortcut-listen='true'>
         <Container className='min-h-screen flex flex-col justify-between'>
           <Header />
 
           {children}
 
-          <Footer />
+          <Suspense fallback={null}>
+            <Footer />
+          </Suspense>
         </Container>
       </body>
     </html>

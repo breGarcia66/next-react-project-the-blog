@@ -3,6 +3,7 @@ import { PostCoverImage } from '../PostCoverImage';
 import { PostSummary } from '../PostSummary';
 
 import { allPublicPosts } from '@/lib/post/queries';
+import { formatDatetime } from '@/utils/format-datetime';
 
 import { formatRelativeDate } from '@/utils/format-relative-date';
 
@@ -44,7 +45,7 @@ export async function PostList() {
             <PostSummary
               url={postLink}
               as='h3'
-              createdAt={formatRelativeDate(post.createdAt)}
+              createdAt={post.createdAt}
               title={post.title}
               excerpt={post.excerpt}
             />

@@ -1,10 +1,10 @@
 //components
 import { PostCoverImage } from '../PostCoverImage';
 import { PostHeading } from '../PostHeading';
-
 import { allPublicPosts } from '@/lib/post/queries';
+import { RelativeDate } from '../RelativeDate';
 
-import { formatRelativeDate } from '@/utils/format-relative-date';
+import { formatDatetime } from '@/utils/format-datetime';
 
 import clsx from 'clsx';
 
@@ -41,12 +41,7 @@ export async function PostFeatured() {
       />
 
       <div>
-        <time
-          dateTime={formatRelativeDate(postFeatured.createdAt)}
-          className={mainPostTime}
-        >
-          {formatRelativeDate(postFeatured.createdAt)}
-        </time>
+        <RelativeDate date={postFeatured.createdAt} className='text-sm/tight text-stone-500 block' />
 
         <PostHeading url={postLink} as='h2'>
           {postFeatured.title}
