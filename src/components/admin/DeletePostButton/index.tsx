@@ -1,7 +1,9 @@
 'use client';
 
+import { deletePostAction } from '@/actions/post/delete-post-action';
 import clsx from 'clsx';
 import { Trash2Icon } from 'lucide-react';
+import { useTransition } from 'react';
 
 type DeletePostButtonProps = {
   id: string;
@@ -22,10 +24,18 @@ export function DeletePostButton({ id, title }: DeletePostButtonProps) {
 
     'hover:scale-120',
     'hover:text-red-800',
+
+    'disabled:text-red-300',
+    'disabled:cursor-not-allowed',
   );
 
+  const [isPending, startTransition] = useTransition();
+
   function handleClick() {
-    alert(`Post ID: ${id}`);
+    startTransition(async() => {
+      const result = await deletePostAction(id);
+      alert(`${result}`);
+    })
   }
 
   return (
@@ -35,6 +45,7 @@ export function DeletePostButton({ id, title }: DeletePostButtonProps) {
       title={`deletar post: ${title}`}
 
       onClick={handleClick}
+      disabled={isPending}
     >
       <Trash2Icon />
     </button>
