@@ -1,7 +1,7 @@
 //components
 import { PostCoverImage } from '../PostCoverImage';
 import { PostHeading } from '../PostHeading';
-import { allPublicPosts } from '@/lib/post/queries';
+import { findAllPostsPublic } from '@/lib/post/public';
 import { RelativeDate } from '../RelativeDate';
 
 import { formatDatetime } from '@/utils/format-datetime';
@@ -9,7 +9,7 @@ import { formatDatetime } from '@/utils/format-datetime';
 import clsx from 'clsx';
 
 export async function PostFeatured() {
-  const posts = await allPublicPosts();
+  const posts = await findAllPostsPublic();
   const postFeatured = posts[0];
 
   const postLink = `post/${postFeatured.slug}`;
@@ -41,7 +41,10 @@ export async function PostFeatured() {
       />
 
       <div>
-        <RelativeDate date={postFeatured.createdAt} className='text-sm/tight text-stone-500 block' />
+        <RelativeDate
+          date={postFeatured.createdAt}
+          className='text-sm/tight text-stone-500 block'
+        />
 
         <PostHeading url={postLink} as='h2'>
           {postFeatured.title}

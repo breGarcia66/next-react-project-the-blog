@@ -1,5 +1,5 @@
 import { SafeMarkdown } from '../SafeMarkdown';
-import { findPostBySlug } from '@/lib/post/queries';
+import { findPostBySlugPublic } from '@/lib/post/public';
 import { PostDate } from '../PostDate';
 import { formatDatetime } from '@/utils/format-datetime';
 
@@ -10,7 +10,7 @@ type SinglePostProps = {
 };
 
 export async function SinglePost({ slug }: SinglePostProps) {
-  const post = await findPostBySlug(slug);
+  const post = await findPostBySlugPublic(slug);
 
   return (
     <article className='mb-16'>
