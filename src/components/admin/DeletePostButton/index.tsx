@@ -1,9 +1,12 @@
 'use client';
 
-import { deletePostAction } from '@/actions/post/delete-post-action';
 import clsx from 'clsx';
 import { Trash2Icon } from 'lucide-react';
-import { useTransition } from 'react';
+
+import { useState, useTransition } from 'react';
+import { ModalDialog } from '@/components/ModalDialog';
+
+import { deletePostAction } from '@/actions/post/delete-post-action';
 
 type DeletePostButtonProps = {
   id: string;
@@ -30,24 +33,43 @@ export function DeletePostButton({ id, title }: DeletePostButtonProps) {
   );
 
   const [isPending, startTransition] = useTransition();
+  const [showDialog, setShowDialog] = useState(false);
 
   function handleClick() {
-    startTransition(async() => {
+    setShowDialog(true);
+  }
+
+  function handleConfirm() {
+    startTransition(async () => {
       const result = await deletePostAction(id);
-      alert(`${result}`);
-    })
+      alert(`Post ID:   ${result}`);
+
+      setShowDialog(false);
+    });
   }
 
   return (
-    <button
-      className={deleteButton}
-      aria-label={`deletar post: ${title}`}
-      title={`deletar post: ${title}`}
+    <>
+      <button
+        className={deleteButton}
+        aria-label={`deletar post: ${title}`}
+        title={`deletar post: ${title}`}
+        onClick={handleClick}
+        disabled={isPending}
+      >
+        <Trash2Icon />
+      </button>
 
-      onClick={handleClick}
-      disabled={isPending}
-    >
-      <Trash2Icon />
-    </button>
+      {showDialog && (
+        <ModalDialog
+          isVisible={showDialog}
+          title={'Apagar Post'}
+          content={`Apagar post \"${title}\"?`}
+          onCancel={() => setShowDialog(false)}
+          onConfirm={handleConfirm}
+          disabled={isPending}
+        />
+      )}
+    </>
   );
 }
