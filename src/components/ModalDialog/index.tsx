@@ -2,6 +2,7 @@
 
 import clsx from 'clsx';
 import { CircleXIcon, EraserIcon } from 'lucide-react';
+import { Button } from '../Button';
 
 type ModalDialogProps = {
   isVisible?: boolean;
@@ -44,50 +45,6 @@ export function ModalDialog({
     'shadow-black/30',
   );
 
-  const cancelButton = clsx(
-    'bg-stone-300',
-    'text-stone-900',
-    'transition',
-
-    'hover:bg-stone-400',
-
-    'flex',
-    'items-center',
-    'justify-center',
-    'gap-2',
-
-    'py-2',
-    'px-4',
-    'rounded-xs',
-    'cursor-pointer',
-
-    'disabled:bg-stone-300',
-    'disabled:text-stone-400',
-    'disabled:cursor-not-allowed',
-  );
-
-  const confirmButton = clsx(
-    'bg-blue-500',
-    'text-stone-100',
-    'transition',
-
-    'hover:bg-blue-800',
-
-    'flex',
-    'items-center',
-    'justify-center',
-    'gap-2',
-
-    'py-2',
-    'px-4',
-    'rounded-xs',
-    'cursor-pointer',
-
-    'disabled:bg-stone-300',
-    'disabled:text-stone-400',
-    'disabled:cursor-not-allowed',
-  );
-
   function handleCancel() {
     if(disabled) return;
 
@@ -111,24 +68,24 @@ export function ModalDialog({
         <div id='dialog-description'>{content}</div>
 
         <div className='flex items-center justify-end gap-6'>
-          <button
-            className={cancelButton}
+          <Button
             onClick={handleCancel}
             disabled={disabled}
+            variant='ghost'
             autoFocus
           >
             cancelar
             <CircleXIcon />
-          </button>
+          </Button>
 
-          <button
-            className={confirmButton}
+          <Button
             onClick={onConfirm}
             disabled={disabled}
+            variant='default'
           >
             apagar
             <EraserIcon />
-          </button>
+          </Button>
         </div>
       </div>
     </div>
