@@ -3,14 +3,12 @@ import { PostCoverImage } from '../PostCoverImage';
 import { PostSummary } from '../PostSummary';
 
 import { findAllPostsPublic } from '@/lib/post/public';
-import { formatDatetime } from '@/utils/format-datetime';
-
-import { formatRelativeDate } from '@/utils/format-relative-date';
 
 import clsx from 'clsx';
 
 export async function PostList() {
   const posts = (await findAllPostsPublic()).slice(1);
+  if(posts.length === 0) return null;
 
   const postListContainer = clsx(
     'grid',

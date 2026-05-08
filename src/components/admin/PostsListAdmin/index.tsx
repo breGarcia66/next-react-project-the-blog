@@ -1,12 +1,16 @@
-import { DeletePostButton } from '../admin/DeletePostButton';
+import { DeletePostButton } from '../DeletePostButton';
 
 import { findAllPostAdmin } from '@/lib/post/admin';
 
 import clsx from 'clsx';
 import Link from 'next/link';
+import { ErrorMessage } from '../../ErrorMessage';
 
 export default async function AdminPostPage() {
   const allPosts = await findAllPostAdmin();
+  if(allPosts.length === 0){
+    return <ErrorMessage title='Opa!😱' textContent='Não temos nenhum post. Vamos publicar alguns?' />
+  }
 
   return (
     <div className='pb-16'>

@@ -7,9 +7,18 @@ import { RelativeDate } from '../RelativeDate';
 import { formatDatetime } from '@/utils/format-datetime';
 
 import clsx from 'clsx';
+import { ErrorMessage } from '../ErrorMessage';
 
 export async function PostFeatured() {
   const posts = await findAllPostsPublic();
+   if (posts.length === 0) {
+    return (
+      <ErrorMessage
+        title='Ops!😅'
+        textContent='Não temos nenhum post publicado. Volte depois'
+      />
+    );
+  }
   const postFeatured = posts[0];
 
   const postLink = `post/${postFeatured.slug}`;
@@ -24,7 +33,7 @@ export async function PostFeatured() {
     //768px
     'md:grid-cols-2',
   );
-  const mainPostTime = clsx('text-sm/tight', 'text-stone-500', 'block');
+  //const mainPostTime = clsx('text-sm/tight', 'text-stone-500', 'block');
   const postContent = clsx('text-justify');
 
   return (

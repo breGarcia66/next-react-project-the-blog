@@ -7,6 +7,7 @@ import { useState, useTransition } from 'react';
 import { ModalDialog } from '@/components/ModalDialog';
 
 import { deletePostAction } from '@/actions/post/delete-post-action';
+import { showMessage } from '@/adapters/wrapperToastfy';
 
 type DeletePostButtonProps = {
   id: string;
@@ -42,9 +43,16 @@ export function DeletePostButton({ id, title }: DeletePostButtonProps) {
   function handleConfirm() {
     startTransition(async () => {
       const result = await deletePostAction(id);
-      alert(`Post ID:   ${result}`);
-
       setShowDialog(false);
+
+      showMessage.dismiss();
+
+      if (result.erro) {
+        showMessage.error(`Erro: ${result.erro}`);
+        return;
+      }
+
+      showMessage.success('Post apagado!');
     });
   }
 

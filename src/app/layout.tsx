@@ -6,6 +6,7 @@ import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 
 import { Suspense } from 'react';
+import { ToastifyContainer } from '@/components/ToastifyContainer';
 
 export const metadata: Metadata = {
   title: {
@@ -32,6 +33,8 @@ export default function RootLayout({ children }: Readonly<RootLayoutProps>) {
             <Footer />
           </Suspense>
         </Container>
+
+        <ToastifyContainer />
       </body>
     </html>
   );
