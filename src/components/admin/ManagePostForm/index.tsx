@@ -15,62 +15,75 @@ export function ManagerPostForm() {
 
   return (
     <form action='' className='mb-16'>
-      <div className='py-16 flex flex-col gap-4'>
-        <InputCheckBox labelText='Sobrenome' />
-
-        <InputText labelText='nome' type='text' placeholder='Digite seu nome' />
-
-        <ImageUploader />
-
+      <div className='py-12 flex flex-col gap-4'>
         <InputText
-          labelText='sobrenome'
+          labelText='Identificador'
+          name='id'
           type='text'
-          placeholder='Digite seu sobrenome'
+          placeholder='ID gerado automaticamente'
+          readOnly
         />
 
         <InputText
-          disabled
-          labelText='nome'
+          labelText='Slug'
+          name='slug'
           type='text'
-          placeholder='Digite seu nome'
+          placeholder='Slug gerada automaticamente'
+          readOnly
+        />
+
+        <InputText
+          labelText='Autor'
+          name='author'
+          type='text'
+          placeholder='Digite o nome do autor'
+        />
+
+        <InputText
+          labelText='Título'
+          name='title'
+          type='text'
+          placeholder='Título do post'
+        />
+
+        <InputText
+          labelText='Excerto'
+          name='excerpt'
+          type='text'
+          placeholder='Resumo do post'
         />
 
         <MarkdownEditor
           labelText='Conteúdo'
-          disabled={false}
-          textAreaName='content'
           value={contentValue}
           setValue={setContentValue}
+          textAreaName='content'
         />
 
+        <ImageUploader />
+
         <InputText
-          disabled
-          labelText='sobrenome'
+          labelText='URL da imagem de capa'
+          name='coverImageUrl'
           type='text'
-          placeholder='Digite seu sobrenome'
+          placeholder='Digite a URL da imagem'
         />
-        <InputText
-          readOnly
-          labelText='nome'
-          type='text'
-          defaultValue='Digite seu nome'
-        />
-        <InputText
-          readOnly
-          labelText='sobrenome'
-          type='text'
-          defaultValue='Digite seu sobrenome'
+
+        <InputCheckBox
+          labelText='Publicar'
+          name='published'
+          type='checkbox'
         />
       </div>
 
-      <div>
+      <div className='flex justify-end'>
         <Button
           type='submit'
           size='lg'
           className={clsx(
             'bg-stone-900',
             'text-stone-200',
-            
+
             'hover:bg-stone-200',
             'hover:text-stone-900',
             'hover:ring-1',

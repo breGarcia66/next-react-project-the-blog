@@ -29,7 +29,7 @@ export function MenuAdmin() {
     'flex',
     'flex-col',
     'overflow-hidden',
-    'mb-4',
+    'mb-8',
 
     'sm:flex-row',
     'sm:flex-wrap',

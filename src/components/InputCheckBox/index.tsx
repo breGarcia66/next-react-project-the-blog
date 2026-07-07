@@ -18,12 +18,20 @@ export function InputCheckBox({
       <input
         {...props}
         className={clsx(
+          'appearance-none',
           'w-4 h-4',
+          'rounded-xs',
+          'border',
+          'border-stone-900',
           'cursor-pointer',
           'outline-none',
 
-          'focus:ring-1',
-          'focus:ring-stone-600',
+          'checked:bg-stone-900',
+          'checked:text-stone-200',
+
+          'focus:outline-none',
+
+          'transition',
           props.className)}
         type={type} />
 
