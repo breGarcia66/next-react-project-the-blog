@@ -7,9 +7,10 @@ import { ImageUploader } from '../ImageUploader';
 import { Button } from '@/components/Button';
 import { publicPost } from '@/dto/post/dto';
 
-import { useState } from 'react';
+import { useActionState, useEffect, useState } from 'react';
 
 import clsx from 'clsx';
+import { createPostAction } from '@/actions/post/create-post-action';
 
 type ManagePostFormProps = {
   publicPost?: publicPost;
@@ -18,8 +19,21 @@ type ManagePostFormProps = {
 export function ManagerPostForm({ publicPost }: ManagePostFormProps) {
   const [contentValue, setContentValue] = useState(publicPost?.content || '');
 
+  const initalState = {
+    numero: 0,
+  };
+
+  const [state, action, isPending] = useActionState(
+    createPostAction,
+    initalState,
+  );
+
+  useEffect(() => {
+    console.log(state.numero);
+  }, [state]);
+
   return (
-    <form action='' className='mb-16'>
+    <form action={action} className='mb-16'>
       <div className='py-12 flex flex-col gap-4'>
         <InputText
           labelText='Identificador'
