@@ -1,17 +1,22 @@
 'use client';
 
-import { Button } from '@/components/Button';
+import { MarkdownEditor } from '@/components/MarkdownEditor';
 import { InputCheckBox } from '@/components/InputCheckBox';
 import { InputText } from '@/components/InputText';
-import { MarkdownEditor } from '@/components/MarkdownEditor';
+import { ImageUploader } from '../ImageUploader';
+import { Button } from '@/components/Button';
+import { publicPost } from '@/dto/post/dto';
 
 import { useState } from 'react';
-import { ImageUploader } from '../ImageUploader';
 
 import clsx from 'clsx';
 
-export function ManagerPostForm() {
-  const [contentValue, setContentValue] = useState('');
+type ManagePostFormProps = {
+  publicPost?: publicPost;
+};
+
+export function ManagerPostForm({ publicPost }: ManagePostFormProps) {
+  const [contentValue, setContentValue] = useState(publicPost?.content || '');
 
   return (
     <form action='' className='mb-16'>
@@ -21,6 +26,7 @@ export function ManagerPostForm() {
           name='id'
           type='text'
           placeholder='ID gerado automaticamente'
+          defaultValue={publicPost?.id || ''}
           readOnly
         />
 
@@ -29,6 +35,7 @@ export function ManagerPostForm() {
           name='slug'
           type='text'
           placeholder='Slug gerada automaticamente'
+          defaultValue={publicPost?.slug || ''}
           readOnly
         />
 
@@ -37,6 +44,7 @@ export function ManagerPostForm() {
           name='author'
           type='text'
           placeholder='Digite o nome do autor'
+          defaultValue={publicPost?.author || ''}
         />
 
         <InputText
@@ -44,6 +52,7 @@ export function ManagerPostForm() {
           name='title'
           type='text'
           placeholder='Título do post'
+          defaultValue={publicPost?.title || ''}
         />
 
         <InputText
@@ -51,6 +60,7 @@ export function ManagerPostForm() {
           name='excerpt'
           type='text'
           placeholder='Resumo do post'
+          defaultValue={publicPost?.excerpt || ''}
         />
 
         <MarkdownEditor
@@ -67,12 +77,14 @@ export function ManagerPostForm() {
           name='coverImageUrl'
           type='text'
           placeholder='Digite a URL da imagem'
+          defaultValue={publicPost?.coverImageUrl || ''}
         />
 
         <InputCheckBox
           labelText='Publicar'
           name='published'
           type='checkbox'
+          defaultChecked={publicPost?.published}
         />
       </div>
 
