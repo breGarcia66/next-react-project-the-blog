@@ -1,5 +1,5 @@
 import { ManagerPostForm } from '@/components/admin/ManagePostForm';
-import { makePublicPost } from '@/dto/post/dto';
+import { makePublicPostFromDb } from '@/dto/post/dto';
 import { findPostById } from '@/lib/post/admin';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
@@ -18,9 +18,9 @@ export default async function AdminPostId({ params }: AdminPostIdPorps) {
   const { id } = await params;
   const post = await findPostById(id).catch();
 
-  if(!post) notFound();
+  if (!post) notFound();
 
-  const publicPost = makePublicPost(post);
+  const publicPost = makePublicPostFromDb(post);
 
   return (
     <div className='flex flex-col'>
