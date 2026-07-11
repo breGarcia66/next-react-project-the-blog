@@ -2,7 +2,14 @@
 
 import { makePartialPublicPost, publicPost } from '@/dto/post/dto';
 import { PostCreateSchema } from '@/lib/post/validations';
+import { postRepository } from '@/repositories/post';
+import { v4 as uuidV4 } from 'uuid';
+
 import { getZodErrorMessages } from '@/utils/get-zod-error-massages';
+import { makeSlugFromText } from '@/utils/make-slug-from-text';
+
+import { updateTag } from 'next/cache';
+import { redirect } from 'next/navigation';
 
 type createPostActionState = {
   formState: publicPost;
@@ -36,12 +43,26 @@ export async function createPostAction(
     ...validPostData,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
-    id: Date.now().toString(),
-    slug: Math.random().toString(36),
+    id: uuidV4(),
+    slug: makeSlugFromText(validPostData.title),
   };
 
-  return {
-    formState: newPost,
-    errors: [],
-  };
+  try{
+    await postRepository.create(newPost);
+  } catch(e: unknown) {
+    if(e instanceof Error) {
+      return {
+        formState: newPost,
+        errors: [e.message],
+      }
+    }
+
+    return {
+      formState: newPost,
+      errors: ['Erro desconhecido'],
+    }
+  }
+
+  updateTag('posts');
+  redirect(`/admin/post/${newPost.id}`);
 }

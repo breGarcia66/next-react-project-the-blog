@@ -3,6 +3,9 @@ import { PostRepository } from './post-repository';
 import { drizzleDb } from '@/db/drizzle';
 import { asyncDelay } from '@/utils/async-delay';
 import { SIMULATE_WAIT_IN_MS } from '@/lib/constants';
+// import { eq, or } from 'drizzle-orm';
+import { postsTable } from '@/db/drizzle/schemas';
+import { eq } from 'drizzle-orm';
 
 export class DrizzlePostRepository implements PostRepository {
   async findAllPublic(): Promise<postModel[]> {
@@ -53,6 +56,66 @@ export class DrizzlePostRepository implements PostRepository {
     });
 
     return posts;
+  }
+
+  async create(post: postModel): Promise<postModel> {
+    const postExists = await drizzleDb.query.posts.findFirst({
+      where: (posts, { eq, or }) =>
+        or(eq(posts.id, post.id), eq(posts.slug, post.slug)),
+      columns: { id: true },
+    });
+
+    if (!!postExists) {
+      throw new Error('Post com ID ou Slug já existente na base de dados');
+    }
+
+    await drizzleDb.insert(postsTable).values(post);
+    return post;
+  }
+
+  async delete(id: string): Promise<postModel> {
+    const post = await drizzleDb.query.posts.findFirst({
+      where: (posts, { eq }) => eq(posts.id, id),
+    });
+
+    if (!post) {
+      throw new Error('Post não existe na base de dados');
+    }
+
+    await drizzleDb.delete(postsTable).where(eq(postsTable.id, id));
+
+    return post;
+  }
+
+  async update(
+    id: string,
+    newPostData: Omit<postModel, 'id' | 'slug' | 'createdAt' | 'updatedAt'>,
+  ): Promise<postModel> {
+    const oldPost = await drizzleDb.query.posts.findFirst({
+      where: (posts, { eq }) => eq(posts.id, id),
+    });
+
+    if (!oldPost) {
+      throw new Error('Post não existe na base de dados');
+    }
+
+    const newUpdatedAt = new Date().toISOString();
+    const postData: Omit<postModel, 'id' | 'slug' | 'createdAt'> = {
+      author: newPostData.author,
+      title: newPostData.title,
+      excerpt: newPostData.excerpt,
+      content: newPostData.content,
+      coverImageUrl: newPostData.coverImageUrl,
+      published: newPostData.published,
+      updatedAt: newUpdatedAt,
+    };
+
+    await drizzleDb.update(postsTable).set(postData).where(eq(postsTable.id, id));
+
+    return {
+      ...oldPost,
+      ...postData,
+    };
   }
 }
 
