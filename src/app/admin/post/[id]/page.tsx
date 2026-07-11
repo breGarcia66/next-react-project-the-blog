@@ -25,7 +25,7 @@ export default async function AdminPostId({ params }: AdminPostIdPorps) {
   return (
     <div className='flex flex-col'>
       <h1 className='text-2xl font-bold'>Criar Post</h1>
-      <ManagerPostForm publicPost={publicPost} />
+      <ManagerPostForm publicPost={publicPost} mode='update' />
     </div>
   );
 }

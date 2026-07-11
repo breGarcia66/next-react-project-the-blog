@@ -1,7 +1,6 @@
 import { postRepository } from '@/repositories/post';
 import { cacheTag } from 'next/cache';
 import { notFound } from 'next/navigation';
-import { cache } from 'react';
 
 export async function findAllPostsPublic() {
   'use cache';

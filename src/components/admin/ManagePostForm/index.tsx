@@ -1,8 +1,6 @@
 'use client';
 
-import { createPostAction } from '@/actions/post/create-post-action';
 import { makePartialPublicPost, publicPost } from '@/dto/post/dto';
-import { useActionState, useEffect, useState } from 'react';
 import { showMessage } from '@/adapters/wrapperToastfy';
 import { ImageUploader } from '../ImageUploader';
 
@@ -11,31 +9,84 @@ import { InputCheckBox } from '@/components/InputCheckBox';
 import { InputText } from '@/components/InputText';
 import { Button } from '@/components/Button';
 
+import { updatePostAction } from '@/actions/post/update-post-action';
+import { createPostAction } from '@/actions/post/create-post-action';
+
+import { useSearchParams, useRouter } from 'next/navigation';
+import { Router } from 'next/router';
+
+import { useActionState, useEffect, useState } from 'react';
+
 import clsx from 'clsx';
 
-type ManagePostFormProps = {
-  publicPost?: publicPost;
+type ManagePostFormUpdateProps = {
+  mode: 'update';
+  publicPost: publicPost;
 };
 
-export function ManagerPostForm({ publicPost }: ManagePostFormProps) {
+type ManagePostFormCreateProps = {
+  mode: 'create';
+};
+
+type ManagePostFormProps =
+  | ManagePostFormCreateProps
+  | ManagePostFormUpdateProps;
+
+export function ManagerPostForm(props: ManagePostFormProps) {
+  const { mode } = props;
+  let publicPost;
+
+  if (mode === 'update') {
+    publicPost = props.publicPost;
+  }
+
+  const actionsMap = {
+    create: createPostAction,
+    update: updatePostAction,
+  };
+
   const initalState = {
     formState: makePartialPublicPost(publicPost),
     errors: [],
   };
 
   const [state, action, isPending] = useActionState(
-    createPostAction,
+    actionsMap[mode],
     initalState,
   );
 
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const created = searchParams.get('created');
+
   useEffect(() => {
-    if(state.errors.length > 0){
+    if (state.errors.length > 0) {
       showMessage.dismiss();
       state.errors.forEach(error => {
         showMessage.error(error);
-      })
+      });
     }
   }, [state.errors]);
+
+  useEffect(() => {
+    if (state.success) {
+      showMessage.dismiss();
+      showMessage.success('Post atualizado');
+    }
+  }, [state.success]);
+
+  useEffect(() => {
+    if (created === '1') {
+      showMessage.dismiss();
+      showMessage.success('Novo post salvo');
+
+      const url = new URL(window.location.href);
+
+      url.searchParams.delete('created');
+      router.replace(url.toString());
+    }
+  }, [created, router]);
 
   const { formState } = state;
   const [contentValue, setContentValue] = useState(formState.content);
@@ -49,6 +100,7 @@ export function ManagerPostForm({ publicPost }: ManagePostFormProps) {
           type='text'
           placeholder='ID gerado automaticamente'
           defaultValue={formState.id}
+          disabled={isPending}
           readOnly
         />
 
@@ -58,6 +110,7 @@ export function ManagerPostForm({ publicPost }: ManagePostFormProps) {
           type='text'
           placeholder='Slug gerada automaticamente'
           defaultValue={formState.slug}
+          disabled={isPending}
           readOnly
         />
 
@@ -67,6 +120,7 @@ export function ManagerPostForm({ publicPost }: ManagePostFormProps) {
           type='text'
           placeholder='Digite o nome do autor'
           defaultValue={formState.author}
+          disabled={isPending}
         />
 
         <InputText
@@ -75,6 +129,7 @@ export function ManagerPostForm({ publicPost }: ManagePostFormProps) {
           type='text'
           placeholder='Título do post'
           defaultValue={formState.title}
+          disabled={isPending}
         />
 
         <InputText
@@ -83,6 +138,7 @@ export function ManagerPostForm({ publicPost }: ManagePostFormProps) {
           type='text'
           placeholder='Resumo do post'
           defaultValue={formState.excerpt}
+          disabled={isPending}
         />
 
         <MarkdownEditor
@@ -90,9 +146,10 @@ export function ManagerPostForm({ publicPost }: ManagePostFormProps) {
           value={contentValue}
           setValue={setContentValue}
           textAreaName='content'
+          disabled={isPending}
         />
 
-        <ImageUploader />
+        <ImageUploader disabled={isPending} />
 
         <InputText
           labelText='URL da imagem de capa'
@@ -100,6 +157,7 @@ export function ManagerPostForm({ publicPost }: ManagePostFormProps) {
           type='text'
           placeholder='Digite a URL da imagem'
           defaultValue={formState.coverImageUrl}
+          disabled={isPending}
         />
 
         <InputCheckBox
@@ -107,6 +165,7 @@ export function ManagerPostForm({ publicPost }: ManagePostFormProps) {
           name='published'
           type='checkbox'
           defaultChecked={formState.published}
+          disabled={isPending}
         />
       </div>
 
@@ -114,6 +173,7 @@ export function ManagerPostForm({ publicPost }: ManagePostFormProps) {
         <Button
           type='submit'
           size='lg'
+          disabled={isPending}
           className={clsx(
             'bg-stone-900',
             'text-stone-200',

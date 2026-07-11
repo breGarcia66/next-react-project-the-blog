@@ -9,7 +9,11 @@ import { ImageUpIcon } from 'lucide-react';
 
 import clsx from 'clsx';
 
-export function ImageUploader() {
+type ImageUploaderProps = {
+  disabled?: boolean,
+}
+
+export function ImageUploader({ disabled = false }: ImageUploaderProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isUploading, startTransition] = useTransition();
   const [imgUrl, setImgUrl] = useState('');
@@ -67,7 +71,7 @@ export function ImageUploader() {
       <Button
         onClick={handleUploadImage}
         type='button'
-        disabled={isUploading}
+        disabled={isUploading || disabled}
         className={clsx(
           'self-start',
           'bg-stone-900',
@@ -101,7 +105,7 @@ export function ImageUploader() {
         type='file'
         name='file'
         accept='image/*'
-        disabled={isUploading}
+        disabled={isUploading || disabled}
       />
     </div>
   );
