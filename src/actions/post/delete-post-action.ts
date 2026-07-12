@@ -3,15 +3,8 @@
 import { postRepository } from '@/repositories/post';
 import { updateTag } from 'next/cache';
 
-import { asyncDelay } from '@/utils/async-delay';
-import { logColor } from '@/utils/log-colors';
-
-
 export async function deletePostAction(id: string) {
-  await asyncDelay(2000);
-  logColor(`=SERVER=\n${id}`);
-
-  if (!id || typeof id != 'string') {
+   if (!id || typeof id != 'string') {
     return {
       erro: 'Dados de ID inválidos',
     };
