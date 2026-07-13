@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 
 export default async function AdminPostId({ params }: AdminPostIdPorps) {
   const { id } = await params;
-  const post = await findPostById(id).catch();
+  const post = await findPostById(id).catch(() => undefined);
 
   if (!post) notFound();
 

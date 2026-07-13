@@ -2,7 +2,6 @@
 
 import { uploadImageAction } from '@/actions/upload/upload-image-action';
 import { showMessage } from '@/adapters/wrapperToastfy';
-import { IMAGE_UPLOAD_MAX_SIZE } from '@/lib/constants';
 import { useRef, useState, useTransition } from 'react';
 import { Button } from '@/components/Button';
 import { ImageUpIcon } from 'lucide-react';
@@ -10,13 +9,15 @@ import { ImageUpIcon } from 'lucide-react';
 import clsx from 'clsx';
 
 type ImageUploaderProps = {
-  disabled?: boolean,
-}
+  disabled?: boolean;
+};
 
 export function ImageUploader({ disabled = false }: ImageUploaderProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isUploading, startTransition] = useTransition();
   const [imgUrl, setImgUrl] = useState('');
+  const uploadMaxSize =
+    Number(process.env.NEXT_PUBLIC_IMAGE_UPLOAD_MAX_SIZE) || 921600;
 
   function handleUploadImage() {
     if (!fileInputRef.current) return;
@@ -35,9 +36,9 @@ export function ImageUploader({ disabled = false }: ImageUploaderProps) {
     if (!file) {
       setImgUrl('');
       return;
-    };
+    }
 
-    if (file.size > IMAGE_UPLOAD_MAX_SIZE) {
+    if (file.size > uploadMaxSize) {
       showMessage.error('Envie imgens de no máximo 900Kb');
 
       setImgUrl('');
