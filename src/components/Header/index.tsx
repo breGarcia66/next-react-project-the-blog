@@ -18,7 +18,8 @@ export function Header() {
 
     //1280px
     'xl:text-8xl/normal',
-    'xl:py-16'
+    'xl:py-10',
+    'xl:pb-14'
   );
 
   return (

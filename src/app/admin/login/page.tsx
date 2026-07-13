@@ -1,3 +1,5 @@
-export default async function LoginAdminPage(){
-  return <div className="py-16 text-6xl">Página de Login</div>
+import { LoginFormAdmin } from "@/components/admin/LoginFormAdmin";
+
+export default async function LoginAdminPage() {
+  return <LoginFormAdmin />
 }
