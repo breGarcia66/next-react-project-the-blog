@@ -1,12 +1,14 @@
 'use server';
 
 import { makePartialPublicPost, makePublicPostFromDb, publicPost } from '@/dto/post/dto';
-import { PostUpdateSchema } from '@/lib/post/validations';
 import { postRepository } from '@/repositories/post';
 import { updateTag } from 'next/cache';
 
 import { getZodErrorMessages } from '@/utils/get-zod-error-massages';
 import { makeRandomString } from '@/utils/make-random-string';
+
+import { verifyLoginSession } from '@/lib/login/login-manager';
+import { PostUpdateSchema } from '@/lib/post/validations';
 
 type updatePostActionState = {
   formState: publicPost;
@@ -18,6 +20,8 @@ export async function updatePostAction(
   prevState: updatePostActionState,
   formData: FormData,
 ): Promise<updatePostActionState> {
+  const isAuthenticated = await verifyLoginSession();
+
   if (!(formData instanceof FormData)) {
     return {
       formState: prevState.formState,
@@ -35,6 +39,13 @@ export async function updatePostAction(
 
   const formDataToObj = Object.fromEntries(formData.entries());
   const zodParsedObj = PostUpdateSchema.safeParse(formDataToObj);
+
+  if(!isAuthenticated) {
+    return {
+      formState: makePartialPublicPost(formDataToObj),
+      errors: ['Faça login em outra aba antes de salvar'],
+    }
+  }
 
   if (!zodParsedObj.success) {
     const errors = getZodErrorMessages(zodParsedObj.error);

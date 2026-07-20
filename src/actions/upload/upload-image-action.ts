@@ -1,5 +1,6 @@
 'use server';
 
+import { verifyLoginSession } from '@/lib/login/login-manager';
 import { mkdir, writeFile } from 'fs/promises';
 import { extname, resolve } from 'path';
 
@@ -16,6 +17,12 @@ export async function uploadImageAction(
     url,
     erro,
   });
+
+  const isAuthenticated = await verifyLoginSession();
+
+  if (!isAuthenticated) {
+    return makeResult({erro: 'Faça login novamene'});
+  }
 
   const uploadMaxSize = Number(process.env.NEXT_PUBLIC_IMAGE_UPLOAD_MAX_SIZE) || 921600
   const imageServerUrl = process.env.IMAGE_SERVER_URL || 'uploads';
